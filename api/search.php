@@ -29,7 +29,7 @@ if (count($palavras_busca) < 2) {
     exit;
 }
 
-$stmt = $pdo->query("SELECT id, full_name, family_id FROM wp_torti_guests");
+$stmt = $pdo->query("SELECT id, full_name, family_id FROM wp_torti_guests WHERE invited_cha = 1");
 $todos = $stmt->fetchAll();
 
 $encontrados = [];

@@ -13,7 +13,7 @@ if (!$familyId) {
 $stmt = $pdo->prepare("
     SELECT id, full_name, confirmed
     FROM wp_torti_guests
-    WHERE family_id = :family_id
+    WHERE family_id = :family_id AND invited_cha = 1
     ORDER BY id ASC
 ");
 $stmt->execute(['family_id' => $familyId]);
