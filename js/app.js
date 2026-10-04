@@ -1,8 +1,10 @@
 const API = 'api';
+const CHA_TIPO = window.CHA_TIPO || 1;
+const CHA_DATA = window.CHA_DATA || '2026-11-15T15:00:00-03:00';
 
 // ── Countdown ──
 function initCountdown() {
-    const target = new Date('2026-11-21T15:00:00-03:00').getTime();
+    const target = new Date(CHA_DATA).getTime();
     const elDias = document.getElementById('cd-dias');
     const elHoras = document.getElementById('cd-horas');
     const elMin = document.getElementById('cd-min');
@@ -50,7 +52,7 @@ searchBtn.addEventListener('click', function () {
     fetch(`${API}/search.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'nome=' + encodeURIComponent(nome),
+        body: 'nome=' + encodeURIComponent(nome) + '&cha_tipo=' + CHA_TIPO,
     })
         .then(r => r.json())
         .then(data => {
@@ -91,14 +93,14 @@ function loadFamily(familyId) {
     fetch(`${API}/family.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'family_id=' + familyId,
+        body: 'family_id=' + familyId + '&cha_tipo=' + CHA_TIPO,
     })
         .then(r => r.json())
         .then(data => {
             let html = '<p class="rsvp-msg">Marque quem vai comparecer:</p>';
             data.forEach(g => {
                 const checked = g.confirmed == 1 ? 'checked' : '';
-                const tag = g.confirmed == 1 ? ' <span class="rsvp-ja">(ja confirmado)</span>' : '';
+                const tag = g.confirmed == 1 ? ' <span class="rsvp-ja">(já confirmado)</span>' : '';
                 html += `<label class="rsvp-checkbox-label${checked ? ' selecionado' : ''}">
                     <input type="checkbox" class="rsvp-checkbox" value="${g.id}" ${checked}>
                     <span>${esc(g.full_name)}${tag}</span>
@@ -107,18 +109,16 @@ function loadFamily(familyId) {
 
             html += '<label class="rsvp-phone-label">Digite seu telefone:</label>';
             html += '<input type="tel" id="rsvp-telefone" class="rsvp-input" placeholder="(00) 00000-0000">';
-            html += '<button id="rsvp-confirmar-btn" class="rsvp-btn rsvp-btn-primary" disabled>Confirmar Presenca</button>';
+            html += '<button id="rsvp-confirmar-btn" class="rsvp-btn rsvp-btn-primary" disabled>Confirmar Presença</button>';
 
             resultsDiv.innerHTML = html;
 
-            // checkbox toggle visual
             document.querySelectorAll('.rsvp-checkbox').forEach(cb => {
                 cb.addEventListener('change', function () {
                     this.closest('.rsvp-checkbox-label').classList.toggle('selecionado', this.checked);
                 });
             });
 
-            // phone mask
             const telInput = document.getElementById('rsvp-telefone');
             const confirmBtn = document.getElementById('rsvp-confirmar-btn');
 
@@ -131,7 +131,6 @@ function loadFamily(familyId) {
                 confirmBtn.disabled = nums.length < 10;
             });
 
-            // confirm
             confirmBtn.addEventListener('click', function () {
                 const ids = Array.from(document.querySelectorAll('.rsvp-checkbox:checked')).map(el => el.value);
                 const telefone = telInput.value.trim();
@@ -141,7 +140,7 @@ function loadFamily(familyId) {
                     return;
                 }
                 if (telefone.replace(/\D/g, '').length < 10) {
-                    alert('Digite um telefone valido com DDD.');
+                    alert('Digite um telefone válido com DDD.');
                     return;
                 }
 
@@ -164,13 +163,13 @@ function loadFamily(familyId) {
                                 <div class="rsvp-sucesso-icone">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </div>
-                                <div class="rsvp-sucesso-texto">Presenca confirmada com sucesso!</div>
-                                <p class="rsvp-sucesso-sub">Mal podemos esperar para celebrar com voce!</p>
+                                <div class="rsvp-sucesso-texto">Presença confirmada com sucesso!</div>
+                                <p class="rsvp-sucesso-sub">Mal podemos esperar para celebrar com você!</p>
                             </div>`;
                     })
                     .catch(() => {
                         confirmBtn.disabled = false;
-                        confirmBtn.textContent = 'Confirmar Presenca';
+                        confirmBtn.textContent = 'Confirmar Presença';
                         alert('Erro ao confirmar. Tente novamente.');
                     });
             });
@@ -185,5 +184,4 @@ function esc(str) {
     return d.innerHTML;
 }
 
-// ── Init ──
 document.addEventListener('DOMContentLoaded', initCountdown);
