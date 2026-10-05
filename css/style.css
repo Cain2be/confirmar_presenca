@@ -24,7 +24,7 @@
     --success: #4A7C59;
     --success-light: #E8F5E9;
     --shadow: 0 2px 20px rgba(44, 74, 110, 0.06);
-    --shadow-hover: 0 6px 30px rgba(44, 74, 110, 0.12);
+    --shadow-hover: 0 8px 35px rgba(44, 74, 110, 0.15);
     --radius: 12px;
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-script: 'Great Vibes', cursive;
@@ -139,6 +139,33 @@ body {
     opacity: 0.8;
 }
 
+/* ═══════════════ ORNAMENTAL DIVIDER ═══════════════ */
+.ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 0;
+    gap: 1rem;
+}
+
+.ornament::before,
+.ornament::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: linear-gradient(to var(--dir, right), var(--gold-soft), var(--gold));
+}
+
+.ornament::after { --dir: left; }
+
+.ornament svg {
+    width: 18px;
+    height: 18px;
+    color: var(--gold);
+    flex-shrink: 0;
+}
+
 /* ═══════════════ COUNTDOWN ═══════════════ */
 .countdown-section {
     background: var(--bg-card);
@@ -149,8 +176,8 @@ body {
 .countdown {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    max-width: 400px;
+    gap: 1.25rem;
+    max-width: 420px;
     margin: 0 auto;
 }
 
@@ -158,6 +185,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem 0.75rem;
+    min-width: 72px;
+    box-shadow: 0 1px 8px rgba(44, 74, 110, 0.04);
 }
 
 .countdown-number {
@@ -169,12 +202,12 @@ body {
 }
 
 .countdown-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 600;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin-top: 0.3rem;
+    margin-top: 0.35rem;
 }
 
 /* ═══════════════ ACTIONS ═══════════════ */
@@ -198,7 +231,7 @@ body {
     text-align: center;
     text-decoration: none;
     color: var(--text);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -208,25 +241,36 @@ body {
 }
 
 .action-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px) scale(1.01);
     box-shadow: var(--shadow-hover);
-    border-color: var(--navy-light);
+    border-color: var(--gold);
 }
 
 .action-icon {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    background: var(--navy-soft);
+    background: var(--gold-soft);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.action-card:hover .action-icon {
+    background: var(--gold);
+    transform: scale(1.08);
 }
 
 .action-icon svg {
-    width: 22px;
-    height: 22px;
-    color: var(--navy);
+    width: 24px;
+    height: 24px;
+    color: var(--gold-dark);
+    transition: color 0.3s ease;
+}
+
+.action-card:hover .action-icon svg {
+    color: #fff;
 }
 
 .action-title {
@@ -270,7 +314,6 @@ body {
     text-align: center;
 }
 
-/* ── Input / Button (same style as WP) ── */
 .rsvp-input {
     width: 100%;
     box-sizing: border-box;
@@ -337,7 +380,6 @@ body {
     text-align: center;
 }
 
-/* ── Name selection buttons ── */
 .rsvp-select-btn {
     display: block;
     width: 100%;
@@ -360,7 +402,6 @@ body {
     border-color: var(--navy-light);
 }
 
-/* ── Checkbox labels (family members) ── */
 .rsvp-checkbox-label {
     display: flex;
     align-items: center;
@@ -426,7 +467,6 @@ body {
     color: var(--text);
 }
 
-/* ── Success ── */
 .rsvp-sucesso {
     text-align: center;
     padding: 2rem 0;
@@ -467,19 +507,33 @@ body {
 .quote-section {
     text-align: center;
     padding: 3rem 1.5rem;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border-light);
+    background: var(--navy-dark);
+    position: relative;
+}
+
+.quote-section::before {
+    content: '\201C';
+    position: absolute;
+    top: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-serif);
+    font-size: 5rem;
+    color: rgba(212, 169, 79, 0.15);
+    line-height: 1;
+    pointer-events: none;
 }
 
 .quote-text {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 400;
     font-style: italic;
-    color: var(--navy);
+    color: rgba(255, 255, 255, 0.9);
     max-width: 400px;
     margin: 0 auto;
     line-height: 1.6;
+    position: relative;
 }
 
 .quote-ref {
@@ -488,8 +542,9 @@ body {
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--gold);
     margin-top: 0.75rem;
+    position: relative;
 }
 
 /* ═══════════════ FOOTER ═══════════════ */
@@ -497,6 +552,7 @@ body {
     text-align: center;
     padding: 2rem 1.5rem 2.5rem;
     background: var(--navy-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.8rem;
     letter-spacing: 0.05em;
@@ -510,6 +566,21 @@ body {
     font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.8);
 }
+
+/* ═══════════════ SCROLL REVEAL ═══════════════ */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
 
 /* ═══════════════ ANIMATIONS ═══════════════ */
 @keyframes fadeDown {
@@ -525,7 +596,8 @@ body {
 /* ═══════════════ RESPONSIVE ═══════════════ */
 @media (max-width: 520px) {
     .actions-grid { grid-template-columns: 1fr; }
-    .countdown { gap: 1.5rem; }
+    .countdown { gap: 0.75rem; }
+    .countdown-item { min-width: 64px; padding: 0.75rem 1rem 0.6rem; }
     .countdown-number { font-size: 2rem; }
     .rsvp-section { padding: 2.5rem 1rem 3rem; }
     .action-card { padding: 1.5rem 1.25rem; }
