@@ -187,16 +187,22 @@ function esc(str) {
 document.addEventListener('DOMContentLoaded', function () {
     initCountdown();
 
-    const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.15 });
+    var revealEls = document.querySelectorAll('.reveal');
 
-    document.querySelectorAll('.reveal').forEach(function (el) {
-        observer.observe(el);
-    });
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 });
+
+        revealEls.forEach(function (el) { observer.observe(el); });
+    }
+
+    setTimeout(function () {
+        revealEls.forEach(function (el) { el.classList.add('visible'); });
+    }, 2000);
 });
