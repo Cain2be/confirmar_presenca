@@ -58,7 +58,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%;
+    object-position: 33% 30%;
 }
 
 .hero-overlay {
@@ -82,12 +82,10 @@ body {
 }
 
 .monogram {
-    font-family: var(--font-serif);
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    margin-bottom: 0.5rem;
+    display: block;
+    height: 76px;
+    width: auto;
+    margin: 0 auto 0.6rem;
     opacity: 0;
     animation: fadeDown 1s ease 0.2s forwards;
 }
