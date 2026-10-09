@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Como dar um presente · Caio e Looh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Handlee&family=Poppins:wght@300;400;500;600;700;800&display=block" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+<link rel="stylesheet" href="engine.css">
+<style>
+/* Vídeo tutorial "Como dar um presente" (30s). Base comum em engine.css / engine.js. */
+/* ── telas 2 e 3: Meu Chá de Panela ── */
+.s-login, .s-list { background: #EFEDEB; font-family: var(--hand); color: #333; }
+.p-band { position: relative; background: #F8C6B1; border-top: 9px solid #F5AF97; border-bottom: 9px solid #F5AF97; }
+.p-heart { position: absolute; left: 50%; top: -58px; width: 110px; margin-left: -55px; }
+.p-rings { display: block; margin: 0 auto; width: 52px; }
+.p-login-band { margin-top: 120px; padding: 58px 22px 26px; text-align: center; }
+.p-title { font-size: 25px; font-weight: 700; color: #333; margin-top: 20px; }
+.p-sub { font-size: 18px; color: #8B1414; line-height: 1.3; margin-top: 4px; }
+.p-input { display: flex; margin: 18px 0 14px; background: #fff; border: 1px solid #ccc; border-radius: 5px; height: 46px; text-align: left; }
+.p-input .ic { width: 50px; border-right: 1px solid #ccc; display: flex; align-items: center; justify-content: center; color: #555; }
+.p-input .ic svg { width: 18px; }
+.p-field { position: relative; flex: 1; display: flex; align-items: center; padding: 0 14px; font-family: var(--hand); font-size: 18px; color: #333; }
+.p-ph { position: absolute; left: 14px; color: #999; }
+.p-caret { display: inline-block; width: 2px; height: 22px; background: #333; margin-left: 1px; visibility: hidden; opacity: 0; }
+.p-btn-or { display: inline-flex; align-items: center; gap: 8px; background: #F99E70; border-bottom: 4px solid #F27B3D; color: #333;
+    padding: 8px 22px; font-size: 18px; }
+.p-btn-or svg { width: 16px; }
+.p-foot { text-align: center; font-size: 15px; color: #444; margin-top: 46px; }
+.p-foot span { color: #8B1414; }
+.p-hello { margin: 26px 18px 0; background: #F1E7A8; border-top: 6px solid #E2D58C; border-bottom: 6px solid #E2D58C; text-align: center; padding: 14px; font-size: 17px; }
+.p-top { background: #F8DCD0; padding-bottom: 14px; }
+.p-top .p-rings { margin-top: 12px; }
+.p-h { font-size: 30px; color: #8B1414; text-align: center; margin-top: 26px; }
+.p-txt { text-align: center; font-size: 17px; padding: 10px 26px 0; line-height: 1.4; }
+.p-photo { margin: 22px auto 0; width: 250px; height: 290px; background: #F1E4C9; padding: 12px 32px; }
+.p-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.p-sec { padding: 26px 22px 0; }
+.p-sec h3 { font-size: 32px; font-weight: 400; color: #8B1414; padding-bottom: 14px; border-bottom: 1px solid #ddd; }
+.p-sec .p-desc { font-size: 16.5px; line-height: 1.45; margin: 18px 0; }
+.p-filters { display: flex; gap: 10px; margin-bottom: 14px; }
+.p-filters div { flex: 1; border: 1px solid #ccc; border-radius: 4px; text-align: center; padding: 9px 4px; font-size: 13px; background: #fff; }
+.p-filters div:first-child { background: #ddd; font-weight: 700; }
+.p-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; padding-bottom: 150px; }
+.p-card { position: relative; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 6px 6px 14px; min-height: 236px; }
+.p-card .im { height: 100px; display: flex; align-items: center; justify-content: center; }
+.p-card .im svg { height: 92px; }
+.p-tag { position: absolute; left: 6px; top: 6px; background: #5CB85C; color: #fff; font-size: 12px; padding: 1px 7px; border-radius: 3px; z-index: 2; }
+.p-tag.b { background: #5BC0DE; }
+.p-card .nm { font-size: 14px; padding: 8px 8px 10px; line-height: 1.3; min-height: 50px; }
+.p-esc { display: flex; justify-content: center; }
+.p-blue { display: inline-flex; align-items: center; gap: 5px; background: #337AB7; color: #fff; border-radius: 4px; padding: 6px 12px; font-size: 13px; }
+.p-blue svg { width: 13px; }
+.p-chosen { position: absolute; inset: -1px; background: #F4FAFD; border: 1px solid #cde6f0; border-radius: 4px; padding: 6px 6px 14px; visibility: hidden; opacity: 0; z-index: 3; }
+.p-chosen .bt { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.p-orange { display: inline-flex; align-items: center; gap: 5px; background: #F0AD4E; color: #fff; border-radius: 4px; padding: 5px 12px; font-size: 13px; }
+.p-red { display: inline-flex; align-items: center; gap: 5px; background: #D9534F; color: #fff; border-radius: 4px; padding: 5px 12px; font-size: 13px; }
+.p-orange svg, .p-red svg { width: 12px; }
+.p-bar { position: absolute; left: 0; right: 0; bottom: 0; background: #222; color: #fff; text-align: center; padding: 12px 10px 20px; font-size: 15px; line-height: 1.35; z-index: 6; }
+.p-bar .bts { display: flex; justify-content: center; gap: 10px; margin-top: 9px; }
+.p-green { background: #5CB85C; color: #fff; border-radius: 4px; padding: 7px 14px; font-size: 14px; }
+.p-white { background: #fff; color: #333; border-radius: 4px; padding: 7px 14px; font-size: 14px; }
+.p-ov { position: absolute; inset: 0; background: rgba(0,0,0,.5); z-index: 7; visibility: hidden; opacity: 0; }
+.p-modal { position: absolute; left: 10px; right: 10px; top: 10px; background: #fff; border-radius: 6px; z-index: 8;
+    box-shadow: 0 5px 20px rgba(0,0,0,.4); visibility: hidden; opacity: 0; }
+.p-m1 .bd { padding: 16px 18px 14px; font-size: 19px; line-height: 1.3; border-bottom: 1px solid #e5e5e5; }
+.p-m1 .bd em { display: block; font-size: 16px; color: #555; margin-top: 8px; }
+.p-m1 .ft { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; }
+.p-m1 .ft div { border-radius: 4px; padding: 6px 13px; font-size: 16px; }
+.p-cancel { border: 1px solid #ccc; }
+.p-sim { background: #337AB7; color: #fff; }
+.p-m2 .hd { padding: 13px 18px; font-size: 18px; border-bottom: 1px solid #e5e5e5; }
+.p-m2 .bd { padding: 14px 18px 18px; text-align: center; color: #8B1414; }
+.p-m2 .y { font-size: 19px; line-height: 1.3; }
+.p-m2 .y b { display: block; font-size: 23px; font-weight: 400; }
+.p-m2 .gr { background: #DFF0D8; border: 1px solid #c9e2b3; color: #3C763D; font-size: 15px; padding: 10px; border-radius: 4px; margin: 12px 0; line-height: 1.35; }
+.p-m2 .rec { font-size: 22px; line-height: 1.2; }
+.p-m2 .buy { display: inline-flex; align-items: center; gap: 7px; background: #F0AD4E; color: #fff; border-radius: 5px; padding: 10px 22px; font-size: 20px; margin-top: 12px; }
+.p-m2 .buy svg { width: 18px; }
+.p-m2 .nt { color: #555; font-size: 12.5px; margin-top: 8px; }
+
+/* ── tela 4: loja ── */
+.s-store { background: #EDEDED; font-family: var(--sans); color: #333; }
+.st-head { background: #FFF159; padding: 12px 14px 12px; }
+.st-search { background: #fff; border-radius: 3px; height: 38px; box-shadow: 0 1px 2px rgba(0,0,0,.15); display: flex; align-items: center; padding: 0 12px; color: #999; font-size: 14px; gap: 8px; }
+.st-search svg { width: 15px; }
+.st-loc { font-size: 11.5px; color: #333; margin-top: 8px; opacity: .8; }
+.st-body { background: #fff; margin-top: 8px; padding: 14px 16px 20px; }
+.st-new { font-size: 12px; color: #999; }
+.st-title { font-size: 16px; line-height: 1.35; margin-top: 4px; font-weight: 400; }
+.st-img { height: 250px; display: flex; align-items: center; justify-content: center; margin: 10px 0; }
+.st-img svg { height: 210px; }
+.st-line { height: 12px; border-radius: 6px; background: #eee; margin-top: 10px; }
+.st-line.s { width: 45%; height: 22px; background: #e6e6e6; margin-top: 14px; }
+.st-ship { color: #00A650; font-size: 14px; font-weight: 500; margin-top: 16px; }
+.st-buy { background: #3483FA; color: #fff; text-align: center; border-radius: 6px; padding: 13px; font-size: 15px; font-weight: 600; margin-top: 18px; }
+.st-cart { background: #E3EDFB; color: #3483FA; text-align: center; border-radius: 6px; padding: 13px; font-size: 15px; font-weight: 600; margin-top: 9px; }
+
+</style>
+</head>
+<body>
+<div id="stage">
+    <div id="glow"></div>
+    <div id="dots"></div>
+
+    <div class="step" id="st1">
+        <div class="badge anim"><i>1</i>PASSO 1 DE 5</div>
+        <h2 id="h1" class="anim">Abra a <span class="kw">lista de presentes</span></h2>
+        <p class="anim">No site do nosso chá, toque em Lista de Presentes</p>
+    </div>
+    <div class="step" id="st2">
+        <div class="badge anim"><i>2</i>PASSO 2 DE 5</div>
+        <h2 id="h2" class="anim">Entre com seu <span class="kw">e&#8209;mail</span></h2>
+        <p class="anim">Não precisa de senha nem de cadastro</p>
+    </div>
+    <div class="step" id="st3">
+        <div class="badge anim"><i>3</i>PASSO 3 DE 5</div>
+        <h2 id="h3" class="anim">Escolha um <span class="kw">presente</span></h2>
+        <p class="anim">Role até a lista e toque em escolher</p>
+    </div>
+    <div class="step" id="st4">
+        <div class="badge anim"><i>4</i>PASSO 4 DE 5</div>
+        <h2 id="h4" class="anim">Confirme a <span class="kw">escolha</span></h2>
+        <p class="anim">Toque em Sim e o presente fica reservado para você</p>
+    </div>
+    <div class="step" id="st5">
+        <div class="badge anim"><i>5</i>PASSO 5 DE 5</div>
+        <h2 id="h5" class="anim">Compre na <span class="kw">loja</span></h2>
+        <p class="anim">Toque em Comprar e finalize no site indicado pelos noivos</p>
+    </div>
+
+    <div id="h6wrap">
+        <div id="h6" class="anim">Pronto! Simples <span class="kw">assim.</span></div>
+        <div id="h6sub" class="anim">Escolha, reserve e compre em poucos toques</div>
+    </div>
+    <div id="fan"></div>
+    <div id="phone" class="phone"></div>
+    <div id="end"></div>
+    <div id="vignette"></div>
+</div>
+<div id="play"><button type="button">▶ Assistir</button></div>
+
+<script>
+// ═══════════════ dados de exemplo ═══════════════
+const SITE_URL  = 'caiostabile.com.br/chadecasanova';
+const LISTA_URL = 'caioelooh.meuchadepanela.com.br';
+const LOJA_URL  = 'mercadolivre.com.br';
+const START_URL = SITE_URL;
+const EMAIL     = 'maria@email.com';
+const CONVIDADO = 'Maria';
+const PRESENTE  = '100 Cabides';
+const PRESENTE_DESC = 'Kit Cabides Veludo De Roupa Antideslizante Slim Adulto Cinza 50 Unidades';
+const END_TAG   = 'Obrigado pelo carinho!';
+
+// Tempos (s). Cada passo começa num destes instantes.
+const T = { s1: 0, s2: 5.4, s3: 10.8, s4: 15.2, s5: 19.6, fan: 23.8, end: 27, total: 30 };
+const SUCCESS_T = 22.4;
+const TAPS = [3.8, 6.0, 8.8, 11.4, 14.6, 16.4, 20.2, 22.0];
+
+// ═══════════════ telas do celular ═══════════════
+const HEART = '<svg viewBox="0 0 120 110"><path d="M60 108C30 80 2 62 2 32 2 14 16 2 32 2c12 0 22 7 28 18C66 9 76 2 88 2c16 0 30 12 30 30 0 30-28 48-58 76z" fill="#5E0A0A"/><path d="M60 96C36 74 14 58 14 34 14 21 24 12 35 12c11 0 19 7 25 18 6-11 14-18 25-18 11 0 21 9 21 22 0 24-22 40-46 62z" fill="#8A0D0D"/></svg>';
+const RINGS = '<svg viewBox="0 0 64 40"><circle cx="24" cy="20" r="15" fill="none" stroke="#E2B13C" stroke-width="5"/><circle cx="40" cy="20" r="15" fill="none" stroke="#F0C552" stroke-width="5"/><circle cx="24" cy="20" r="15" fill="none" stroke="#C9952A" stroke-width="1"/></svg>';
+const ART = {
+    potes: '<svg viewBox="0 0 120 100"><g fill="#f4f6f8" stroke="#b9c2cc" stroke-width="2">' +
+        [0,1,2,3].map(i => `<rect x="${8+(i%2)*52}" y="${8+Math.floor(i/2)*42}" width="50" height="36" rx="5"/><rect x="${6+(i%2)*52}" y="${6+Math.floor(i/2)*42}" width="54" height="8" rx="3" fill="#e3e8ee"/>`).join('') +
+        '</g><circle cx="84" cy="86" r="6" fill="#d23c3c"/><circle cx="94" cy="84" r="5" fill="#e45656"/><circle cx="76" cy="88" r="4" fill="#5aa04a"/></svg>',
+    cabides: '<svg viewBox="0 0 120 100">' +
+        [3,2,1,0].map(i => `<g transform="translate(${i*6} ${i*8})"><path d="M54 22 c0-7 9-7 9-1 c0 4-4 5-5 9" fill="none" stroke="#b8bcc2" stroke-width="2.5" stroke-linecap="round"/>` +
+            `<path d="M58 28 L16 52 Q11 56 18 57 L98 57 Q105 56 100 52 Z M58 35 L33 51 L84 51 Z" fill-rule="evenodd" fill="${['#8d9299','#979ca3','#a2a7ad','#adb1b7'][i]}" stroke="#767b82" stroke-width="1"/></g>`).join('') +
+        '<circle cx="18" cy="20" r="13" fill="#3d8f3a"/><text x="18" y="24" font-size="11" font-family="Poppins" font-weight="700" fill="#fff" text-anchor="middle">50</text></svg>',
+    jogo: '<svg viewBox="0 0 120 100"><rect x="0" y="0" width="120" height="100" fill="#2e4a3a"/><g fill="none" stroke="#e5e8ea" stroke-width="2">' +
+        [40,32,24,16,8].map(r => `<circle cx="60" cy="50" r="${r}"/>`).join('') + '</g></svg>',
+    caixas: '<svg viewBox="0 0 120 100"><rect x="0" y="0" width="120" height="100" fill="#eadfce"/><rect x="22" y="14" width="76" height="34" rx="4" fill="#2b2b2b"/><rect x="16" y="50" width="88" height="42" rx="4" fill="#333"/>' +
+        '<g stroke="#555" stroke-width="1.5">' + [0,1,2,3,4,5,6].map(i => `<line x1="${24+i*12}" y1="56" x2="${24+i*12}" y2="88"/>`).join('') + '</g></svg>',
+};
+
+// ═══════════════ telas do celular ═══════════════
+function screenLogin() {
+    return `<div class="scr s-login"><div class="pg">
+        <div class="p-band p-login-band"><div class="p-heart">${HEART}</div>
+            <div class="p-rings">${RINGS}</div>
+            <div class="p-title">Looh e Caio</div>
+            <div class="p-sub">Informe o seu e-mail para acessar a lista de presentes</div>
+            <div class="p-input tgt"><div class="ic">${IC.mail}</div><div class="p-field"><span class="p-ph">Seu e-mail...</span><span class="p-typed"></span><span class="p-caret"></span></div><div class="tap"></div></div>
+            <div class="p-btn-or tgt p-go">${IC.enter} Acessar a lista de presentes<div class="tap"></div></div>
+        </div>
+        <div class="p-foot">Site oferecido por <span>Meu Chá de Panela</span></div>
+    </div></div>`;
+}
+function giftCard(art, name, extra = '') {
+    return `<div class="p-card ${extra}"><span class="p-tag">Disponível</span><div class="im">${ART[art]}</div><div class="nm">${name}</div>
+        <div class="p-esc"><div class="p-blue tgt">${IC.hand} escolher<div class="tap"></div></div></div>
+        ${extra ? `<div class="p-chosen"><span class="p-tag b">Escolhido por você</span><div class="im">${ART[art]}</div><div class="nm">${name}</div>
+            <div class="bt"><div class="p-orange">${IC.cart} comprar</div><div class="p-red">${IC.x} remover</div></div></div>` : ''}
+    </div>`;
+}
+function screenList() {
+    return `<div class="scr s-list"><div class="pg">
+        <div class="p-top"><div class="p-hello">Olá, <b>${CONVIDADO}</b>!</div><div class="p-rings">${RINGS}</div></div>
+        <div class="p-h">Chá de Panela</div>
+        <div class="p-txt">Seja muito bem vindo ao Meu Chá de Casa Nova.</div>
+        <div class="p-h">Looh e Caio</div>
+        <div class="p-photo"><img src="${PHOTO_SRC}" alt=""></div>
+        <div class="p-sec"><h3>Lista de Presentes</h3>
+            <div class="p-desc">Abaixo estão os produtos da lista de presentes para você escolher. ☺</div>
+            <div class="p-filters"><div>Todos os presentes</div><div>Disponíveis para escolher</div></div>
+            <div class="p-grid">${giftCard('potes', '10 potes de vidro 640ml')}${giftCard('cabides', PRESENTE, 'p-target')}${giftCard('jogo', '12 Jogos americanos prata')}${giftCard('caixas', '2 caixas organizadoras 17 litros')}</div>
+        </div>
+    </div>
+    <div class="p-bar">Olá, <b>${CONVIDADO}</b>!<br>Sua presença ainda não foi confirmada.
+        <div class="bts"><div class="p-green">✔ Confirmar Presença</div><div class="p-white tgt p-close">✖ Fechar<div class="tap"></div></div></div></div>
+    <div class="p-ov"></div>
+    <div class="p-modal p-m1"><div class="bd">Tem certeza que deseja escolher o presente <b>${PRESENTE}</b>?<em>Você pode remover essa escolha depois caso mude de ideia.</em></div>
+        <div class="ft"><div class="p-cancel">Cancelar</div><div class="p-sim tgt">Sim<div class="tap"></div></div></div></div>
+    <div class="p-modal p-m2"><div class="hd">Presente escolhido!</div><div class="bd">
+        <div class="y">Você escolheu o presente<b>${PRESENTE}.</b></div>
+        <div class="gr">${PRESENTE_DESC}</div>
+        <div class="rec">O casal recomendou o local de compra, para acessar clique no botão abaixo:</div>
+        <div class="buy tgt">${IC.cart} Comprar<div class="tap"></div></div>
+        <div class="nt">* Esse é um link recomendado pelo casal.</div></div></div>
+    </div>`;
+}
+function screenStore() {
+    return `<div class="scr s-store"><div class="pg">
+        <div class="st-head"><div class="st-search">${IC.search} Buscar produtos, marcas e muito mais…</div><div class="st-loc">Enviar para …</div></div>
+        <div class="st-body"><div class="st-new">Novo</div>
+            <div class="st-title">${PRESENTE_DESC}</div>
+            <div class="st-img">${ART.cabides}</div>
+            <div class="st-line s"></div><div class="st-line" style="width:70%"></div>
+            <div class="st-ship">Chegará grátis</div>
+            <div class="st-buy tgt">Comprar agora<div class="tap"></div></div>
+            <div class="st-cart">Adicionar ao carrinho</div>
+        </div>
+    </div></div>`;
+}
+function SCREENS() { return screenSite() + screenLogin() + screenList() + screenStore(); }
+
+// ═══════════════ leque final ═══════════════
+const FAN_LABELS = ['Abra a lista', 'Seu e-mail', 'Escolha', 'Confirme', 'Compre na loja'];
+let LIST_SCROLL = 0;
+function fanState(i, q) {
+    const show = ['s-site', 's-login', 's-list', 's-list', 's-store'][i];
+    ['s-site', 's-login', 's-list', 's-store'].forEach(s => { q('.' + s).style.visibility = s === show ? 'visible' : 'hidden'; });
+    q('.url-t').textContent = i === 0 ? SITE_URL : i === 4 ? LOJA_URL : LISTA_URL;
+    if (i === 1) { q('.p-ph').style.display = 'none'; q('.p-typed').textContent = EMAIL; }
+    if (i === 2 || i === 3) { q('.s-list .pg').style.transform = `translateY(${LIST_SCROLL}px)`; q('.p-bar').style.display = 'none'; }
+    if (i === 3) ['.p-ov', '.p-m2', '.p-chosen'].forEach(s => { q(s).style.cssText = 'visibility:visible;opacity:1'; });
+}
+
+// ═══════════════ cenas ═══════════════
+function build() {
+    const site = P('.s-site'), login = P('.s-login'), list = P('.s-list'), store = P('.s-store');
+
+    // posições de rolagem medidas no próprio layout
+    const giftCardEl = P('.o-gift');
+    const siteScroll = -(topIn(giftCardEl, P('.s-site .pg')) - 150);
+    const target = P('.p-target');
+    const listScroll = -(topIn(target, P('.s-list .pg')) - 250);
+
+    LIST_SCROLL = listScroll;
+    const SLOTS = mountFan();
+
+    // estados iniciais
+    gsap.set([login, list, store], { autoAlpha: 0 });
+    gsap.set(store, { xPercent: 100 });
+
+    // ── PASSO 1: nosso site ──
+    tl.fromTo(phone, { y: 260, rotation: 6, autoAlpha: 0, scale: .9 }, { y: 0, rotation: 0, autoAlpha: 1, scale: 1, duration: 1.3, ease: 'power3.out' }, .1);
+    tl.to(phone, { y: -10, duration: 2.2, yoyo: true, repeat: 9, ease: 'sine.inOut' }, 1.4);
+    stepIn('#st1', .5);
+    tl.fromTo(P('.o-hc'), { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'power2.out', immediateRender: false }, .9);
+    tl.to(P('.s-site .pg'), { y: siteScroll, duration: 1.3, ease: 'power3.inOut' }, 2.1);
+    tl.to(P('.o-gift .o-hl'), { autoAlpha: 1, duration: .3 }, 3.6);
+    tap(giftCardEl, T.s1 + 3.8);
+    const fcTab = fcard({ x: 1590, y: 520, label: 'NOVA ABA', text: 'Abre em outra aba', sub: 'do seu navegador', icon: 'tab' });
+    cardIn(fcTab, 4.0, { x: 30, y: 0 });
+    urlTo(LISTA_URL, 4.5);
+    tl.to(site, { autoAlpha: 0, duration: .4 }, 4.75);
+    tl.to(login, { autoAlpha: 1, duration: .4 }, 4.75);
+    cardOut(fcTab, 5.1);
+    stepOut('#st1', 5.0);
+
+    // ── PASSO 2: e-mail ──
+    stepIn('#st2', T.s2);
+    tap(P('.p-input'), T.s2 + .6);
+    tl.set(P('.p-ph'), { autoAlpha: 0 }, T.s2 + .75);
+    tl.fromTo(P('.p-caret'), { autoAlpha: 1 }, { autoAlpha: 0, duration: .27, ease: 'steps(1)', repeat: 9, yoyo: true, immediateRender: false }, T.s2 + .75);
+    tl.to(P('.p-typed'), { text: { value: EMAIL }, duration: 1.7, ease: 'none' }, T.s2 + .9);
+    const fcPass = fcard({ x: 1590, y: 590, label: 'DICA', text: 'Sem senha', sub: 'basta o seu e-mail', icon: 'key', gold: true });
+    cardIn(fcPass, T.s2 + 1.5, { x: 30, y: 0 });
+    tap(P('.p-go'), TAPS[2]);
+    tl.set(P('.p-caret'), { autoAlpha: 0 }, TAPS[2]);
+    cardOut(fcPass, T.s2 + 3.9);
+    tl.to(login, { autoAlpha: 0, duration: .4 }, TAPS[2] + .45);
+    tl.to(list, { autoAlpha: 1, duration: .4 }, TAPS[2] + .45);
+    tl.fromTo(P('.p-hello'), { scale: .9 }, { scale: 1, duration: .6, ease: 'back.out(2)', immediateRender: false }, TAPS[2] + .6);
+    stepOut('#st2', T.s3 - .4);
+
+    // ── PASSO 3: escolher ──
+    stepIn('#st3', T.s3);
+    const fcBar = fcard({ x: 1590, y: 790, label: 'PODE FECHAR', text: 'Este aviso', sub: 'presença é no nosso site', icon: 'info' });
+    cardIn(fcBar, T.s3 + .1, { x: 30, y: 0 });
+    tap(P('.p-close'), TAPS[3]);
+    tl.to(P('.p-bar'), { yPercent: 110, duration: .45, ease: 'power2.in' }, TAPS[3] + .25);
+    cardOut(fcBar, TAPS[3] + .5);
+    tl.to(P('.s-list .pg'), { y: listScroll, duration: 1.6, ease: 'power3.inOut' }, 12.3);
+    const fcGift = fcard({ x: 940, y: 560, label: 'DISPONÍVEL', text: PRESENTE, icon: 'gift', gold: true });
+    cardIn(fcGift, 13.9, { x: -30, y: 0 });
+    tap(P('.p-target .p-blue'), TAPS[4]);
+    cardOut(fcGift, 15.0);
+    stepOut('#st3', T.s4 - .4);
+
+    // ── PASSO 4: confirmar ──
+    tl.to(P('.p-ov'), { autoAlpha: 1, duration: .3 }, TAPS[4] + .25);
+    tl.fromTo(P('.p-m1'), { autoAlpha: 0, y: -30 }, { autoAlpha: 1, y: 0, duration: .4, ease: 'power2.out', immediateRender: false }, TAPS[4] + .3);
+    stepIn('#st4', T.s4);
+    tap(P('.p-sim'), TAPS[5]);
+    tl.to(P('.p-m1'), { autoAlpha: 0, y: -20, duration: .25 }, TAPS[5] + .3);
+    tl.set(P('.p-chosen'), { autoAlpha: 1 }, TAPS[5] + .4);
+    tl.fromTo(P('.p-m2'), { autoAlpha: 0, y: -30 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out', immediateRender: false }, TAPS[5] + .55);
+    const fcRes = fcard({ x: 1590, y: 330, label: 'RESERVADO', text: 'Só para você', sub: 'ninguém mais escolhe', icon: 'check', gold: true });
+    cardIn(fcRes, TAPS[5] + 1.1, { x: 30, y: 0 });
+    cardOut(fcRes, T.s5 - .2);
+    stepOut('#st4', T.s5 - .4);
+
+    // ── PASSO 5: comprar na loja ──
+    stepIn('#st5', T.s5);
+    tap(P('.p-m2 .buy'), TAPS[6]);
+    urlTo(LOJA_URL, TAPS[6] + .3);
+    tl.set(store, { autoAlpha: 1 }, TAPS[6] + .4);
+    tl.to(store, { xPercent: 0, duration: .55, ease: 'power3.out' }, TAPS[6] + .4);
+    const fcML = fcard({ x: 1590, y: 330, label: 'LOJA INDICADA', text: 'Mercado Livre', shop: { t: 'ML', bg: '#FFE600', fg: '#2D3277' } });
+    const fcSP = fcard({ x: 1590, y: 450, label: 'OU', text: 'Shopee', shop: { t: 'S', bg: '#EE4D2D', fg: '#fff' } });
+    cardIn(fcML, TAPS[6] + .9, { x: 30, y: 0 });
+    cardIn(fcSP, TAPS[6] + 1.1, { x: 30, y: 0 });
+    tap(P('.st-buy'), TAPS[7]);
+    cardOut(fcML, SUCCESS_T - .1); cardOut(fcSP, SUCCESS_T);
+    const fcOk = fcard({ x: 170, y: 690, label: 'TUDO CERTO', text: 'Presente garantido!', icon: 'check', gold: true });
+    cardIn(fcOk, SUCCESS_T, { x: 0, y: 30 });
+    tl.to(phone, { scale: 1.03, duration: .25, yoyo: true, repeat: 1, ease: 'power2.out' }, SUCCESS_T);
+    confetti(SUCCESS_T, 1430, 380);
+    const fcDay = fcard({ x: 1590, y: 380, label: 'NO DIA DO CHÁ', text: 'Leve com você', sub: 'ou envie para os noivos', icon: 'bag' });
+    cardIn(fcDay, SUCCESS_T + .5, { x: 30, y: 0 });
+
+    // ── leque ──
+    stepOut('#st5', T.fan - .3);
+    cardOut(fcOk, T.fan - .2); cardOut(fcDay, T.fan - .2);
+    tl.to(phone, { autoAlpha: 0, scale: .55, y: 200, x: -240, duration: .55, ease: 'power3.in' }, T.fan - .25);
+    fanScene(SLOTS);
+}
+
+</script>
+<script src="engine.js"></script>
+<script>start(['18px Handlee']);</script>
+</body>
+</html>

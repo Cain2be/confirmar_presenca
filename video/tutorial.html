@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Como confirmar presença · Caio e Looh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700;800&display=block" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+<link rel="stylesheet" href="engine.css">
+<style>
+/* Vídeo tutorial "Como confirmar presença" (30s). Base comum em engine.css / engine.js. */
+
+/* ── tela inicial do navegador ── */
+.s-fav { background: #F2F2F7; font-family: var(--sans); padding: 26px 22px; }
+.s-fav h4 { font-size: 21px; font-weight: 700; color: #111; margin-bottom: 16px; }
+.fav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px 14px; }
+.fav-grid div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.fav-grid i { width: 62px; height: 62px; border-radius: 14px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.fav-grid b { width: 44px; height: 6px; border-radius: 3px; background: #dcdce2; }
+.url-pill { position: relative; overflow: visible; }
+
+/* ── seção de confirmação do nosso site ── */
+.r-sec { padding: 40px 24px 40px; }
+.r-title { font-family: var(--serif); font-size: 31px; font-weight: 400; text-align: center; color: var(--navy-dark); }
+.r-sub { text-align: center; color: #5D6D7E; font-size: 13.5px; font-weight: 300; margin: 6px 0 26px; }
+.r-input { display: flex; align-items: center; height: 50px; padding: 0 16px; background: #fff; border: 1px solid #D5DDE5; border-radius: 8px;
+    box-shadow: 0 2px 20px rgba(44,74,110,.06); font-size: 15px; color: #2C3E50; white-space: nowrap; text-align: left; }
+.r-ph { color: #95A5A6; }
+.r-caret { display: inline-block; width: 2px; height: 20px; background: #2C3E50; margin-left: 1px; visibility: hidden; opacity: 0; }
+.r-btnwrap { display: flex; justify-content: center; margin-top: 16px; }
+.r-btn { position: relative; background: var(--navy); color: #fff; font-weight: 600; font-size: 14.5px; border-radius: 8px; padding: 12px 30px; letter-spacing: .3px; }
+.r-btn .r-dis { position: absolute; inset: 0; border-radius: 8px; background: #9BAEC0; visibility: hidden; opacity: 0; }
+.r-btn .r-bt { position: relative; }
+.r-res { position: relative; margin-top: 24px; height: 420px; }
+.r-res > div { position: absolute; left: 0; right: 0; top: 0; visibility: hidden; opacity: 0; }
+.r-msg { text-align: center; color: #5D6D7E; font-size: 13.5px; margin-bottom: 12px; }
+.r-sel { background: #fff; border: 1px solid #D5DDE5; border-radius: 8px; padding: 14px 16px; font-size: 14.5px; color: #2C3E50; }
+.r-cb { display: flex; align-items: center; margin-bottom: 10px; padding: 12px 16px; background: #fff; border: 1px solid #D5DDE5; border-radius: 8px; font-size: 14.5px; color: #2C3E50; }
+.r-cb .r-on { position: absolute; inset: -1px; border-radius: 8px; background: var(--navy-soft); border: 1px solid var(--navy-light); visibility: hidden; opacity: 0; }
+.r-box { position: relative; width: 22px; height: 22px; flex-shrink: 0; border: 2px solid var(--navy-light); border-radius: 5px; margin-right: 12px; }
+.r-box .r-boxon { position: absolute; inset: -2px; border-radius: 5px; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; }
+.r-box svg { width: 14px; height: 14px; }
+.r-cb span { position: relative; }
+.r-phl { display: block; font-size: 13px; font-weight: 500; color: #2C3E50; margin: 18px 0 8px; }
+.r-ok { text-align: center; padding-top: 20px; }
+.r-ok .ic { width: 64px; height: 64px; border-radius: 50%; background: var(--navy-soft); color: var(--navy); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+.r-ok .ic svg { width: 30px; height: 30px; }
+.r-ok b { display: block; font-family: var(--serif); font-size: 24px; font-weight: 500; color: var(--navy-dark); }
+.r-ok span { display: block; color: var(--gold); font-size: 13.5px; margin-top: 6px; }
+.q-sec { background: var(--navy-dark); text-align: center; padding: 40px 30px; }
+.q-sec p { font-family: var(--serif); font-style: italic; font-size: 20px; color: rgba(255,255,255,.9); }
+.q-sec span { display: block; font-size: 11px; font-weight: 500; letter-spacing: .15em; color: var(--gold); margin-top: 10px; }
+
+.fc .ava { width: 52px; height: 52px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 18px; flex-shrink: 0; }
+.fc .ok { width: 30px; height: 30px; border-radius: 50%; background: var(--gold); color: #fff; display: flex; align-items: center; justify-content: center; margin-left: 10px; }
+.fc .ok svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+<div id="stage">
+    <div id="glow"></div>
+    <div id="dots"></div>
+
+    <div class="step" id="st1">
+        <div class="badge anim"><i>1</i>PASSO 1 DE 5</div>
+        <h2 id="h1" class="anim">Acesse o <span class="kw">site</span> do nosso chá</h2>
+        <p class="anim">Toque no link ou digite o endereço no navegador do celular</p>
+    </div>
+    <div class="step" id="st2">
+        <div class="badge anim"><i>2</i>PASSO 2 DE 5</div>
+        <h2 id="h2" class="anim">Digite seu <span class="kw">nome completo</span></h2>
+        <p class="anim">Nome e sobrenome, depois toque em Buscar</p>
+    </div>
+    <div class="step" id="st3">
+        <div class="badge anim"><i>3</i>PASSO 3 DE 5</div>
+        <h2 id="h3" class="anim">Selecione o seu <span class="kw">nome</span></h2>
+        <p class="anim">Ele aparece logo abaixo da busca</p>
+    </div>
+    <div class="step" id="st4">
+        <div class="badge anim"><i>4</i>PASSO 4 DE 5</div>
+        <h2 id="h4" class="anim">Confirme toda a <span class="kw">família</span></h2>
+        <p class="anim">Marque cada pessoa que vai comparecer</p>
+    </div>
+    <div class="step" id="st5">
+        <div class="badge anim"><i>5</i>PASSO 5 DE 5</div>
+        <h2 id="h5" class="anim">Informe seu <span class="kw">telefone</span></h2>
+        <p class="anim">Com DDD, e toque em Confirmar Presença</p>
+    </div>
+    <div class="step" id="stok">
+        <div class="badge anim"><i>✓</i>CONFIRMADO</div>
+        <h2 class="anim">Tudo <span class="kw">certo!</span></h2>
+        <p class="anim">Sua presença e a da sua família estão confirmadas</p>
+    </div>
+
+    <div id="h6wrap">
+        <div id="h6" class="anim">Pronto! Simples <span class="kw">assim.</span></div>
+        <div id="h6sub" class="anim">Leva menos de um minuto</div>
+    </div>
+    <div id="fan"></div>
+    <div id="phone" class="phone"></div>
+    <div id="end"></div>
+    <div id="vignette"></div>
+</div>
+<div id="play"><button type="button">▶ Assistir</button></div>
+
+<script>
+// ═══════════════ dados de exemplo ═══════════════
+const URL_TXT   = 'caiostabile.com.br/chadecasanova';
+const START_URL = 'Pesquisar ou digitar site';
+const NOME      = 'Samara Buzinaro Stabile';
+const TEL       = '(16) 98266-0505';
+const FAMILIA   = ['Daniela Pereira Buzinaro', 'Moacir Augusto Stabile', 'Anakin Ubinski Stabile', 'Samara Buzinaro Stabile'];
+const END_TAG   = 'Esperamos por você!';
+
+// Tempos (s). Cada passo começa num destes instantes.
+const T = { s1: 0, s2: 5.4, s3: 10.8, s4: 13.5, s5: 18.9, fan: 23.6, end: 27, total: 30 };
+const SUCCESS_T = 21.95;
+const TAPS = [1.2, 6.9, 9.4, 12.6, 14.4, 15.4, 16.4, 17.4, 19.3, 21.4];
+
+// ═══════════════ telas do celular ═══════════════
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+function screenFav() {
+    return `<div class="scr s-fav"><h4>Favoritos</h4><div class="fav-grid">${'<div><i></i><b></b></div>'.repeat(8)}</div></div>`;
+}
+function rsvpHTML() {
+    const fam = FAMILIA.map(n => `<div class="r-cb tgt"><div class="r-on"></div><i class="r-box"><span class="r-boxon">${CHECK}</span></i><span>${n}</span><div class="tap"></div></div>`).join('');
+    return `<section class="r-sec">
+        <h2 class="r-title">Confirmar Presença</h2>
+        <p class="r-sub">Digite seu nome completo e clique em buscar.</p>
+        <div class="r-input tgt r-name"><span class="r-ph">Digite seu nome completo</span><span class="r-typed"></span><span class="r-caret"></span><div class="tap"></div></div>
+        <div class="r-btnwrap"><div class="r-btn tgt r-buscar"><div class="r-dis"></div><span class="r-bt">Buscar</span><div class="tap"></div></div></div>
+        <div class="r-res">
+            <div class="r-found"><p class="r-msg">Selecione seu nome:</p><div class="r-sel tgt">${NOME}<div class="tap"></div></div></div>
+            <div class="r-fam"><p class="r-msg">Marque quem vai comparecer:</p>${fam}
+                <label class="r-phl">Digite seu telefone:</label>
+                <div class="r-input tgt r-tel"><span class="r-ph">(00) 00000-0000</span><span class="r-typed"></span><span class="r-caret"></span><div class="tap"></div></div>
+                <div class="r-btnwrap"><div class="r-btn tgt r-conf"><div class="r-dis"></div><span class="r-bt">Confirmar Presença</span><div class="tap"></div></div></div></div>
+            <div class="r-ok"><div class="ic">${CHECK}</div><b>Presença confirmada com sucesso!</b><span>Mal podemos esperar para celebrar com você!</span></div>
+        </div>
+    </section>
+    <section class="q-sec"><p>“Eu e minha casa serviremos o Senhor.”</p><span>JOSUÉ 24, 15D</span></section>`;
+}
+function SCREENS() { return screenFav() + screenSite(rsvpHTML()); }
+
+// ═══════════════ leque final ═══════════════
+const FAN_LABELS = ['Acesse o site', 'Digite seu nome', 'Selecione', 'Marque a família', 'Telefone e confirme'];
+const SCROLL = { rsvp: 0, fam: 0 };
+function fanState(i, q) {
+    const vis = (s, on = true) => { q(s).style.cssText = on ? 'visibility:visible;opacity:1' : 'visibility:hidden;opacity:0'; };
+    vis('.s-fav', false);
+    q('.url-t').textContent = URL_TXT;
+    if (i === 0) return;
+    q('.s-site .pg').style.transform = `translateY(${i === 1 ? SCROLL.rsvp : SCROLL.fam}px)`;
+    q('.r-name .r-ph').style.display = 'none'; q('.r-name .r-typed').textContent = NOME;
+    if (i === 2) vis('.r-found');
+    if (i === 3) {
+        vis('.r-fam');
+        $$('.r-on, .r-boxon', q('.r-fam')).forEach(el => { el.style.cssText = 'visibility:visible;opacity:1'; });
+        q('.r-tel .r-ph').style.display = 'none'; q('.r-tel .r-typed').textContent = TEL;
+    }
+    if (i === 4) { vis('.r-ok'); q('.r-buscar').style.visibility = 'hidden'; }
+}
+
+// ═══════════════ cenas ═══════════════
+function build() {
+    Object.assign(IC, {
+        link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>',
+        cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+        user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+        search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>',
+    });
+    const fav = P('.s-fav'), pg = P('.s-site .pg');
+    const urlT = P('.url-t'), lock = P('.url-lock');
+    SCROLL.rsvp = -(topIn(P('.r-title'), pg) - 40);
+    SCROLL.fam = -(topIn(P('.r-res'), pg) - 20);
+    const SLOTS = mountFan();
+
+    // estados iniciais: navegador vazio
+    gsap.set(urlT, { color: '#8e8e93' });
+    gsap.set(lock, { autoAlpha: 0 });
+    gsap.set(P('.s-site'), { autoAlpha: 0 });
+    const urlTap = document.createElement('div'); urlTap.className = 'tap'; P('.url-pill').appendChild(urlTap);
+    const caret = (el, t, n) => tl.fromTo($('.r-caret', el), { autoAlpha: 1 }, { autoAlpha: 0, duration: .27, ease: 'steps(1)', repeat: n, yoyo: true, immediateRender: false }, t);
+
+    // ── PASSO 1: acessar o site ──
+    tl.fromTo(phone, { y: 260, rotation: 6, autoAlpha: 0, scale: .9 }, { y: 0, rotation: 0, autoAlpha: 1, scale: 1, duration: 1.2, ease: 'power3.out' }, .05);
+    tl.to(phone, { y: -10, duration: 2.2, yoyo: true, repeat: 9, ease: 'sine.inOut' }, 1.3);
+    stepIn('#st1', .4);
+    tap(P('.url-pill'), TAPS[0]);
+    tl.set(urlT, { text: '', color: '#333' }, TAPS[0] + .15);
+    tl.set(lock, { autoAlpha: 1 }, TAPS[0] + .15);
+    tl.to(urlT, { text: { value: URL_TXT }, duration: 1.3, ease: 'none' }, TAPS[0] + .25);
+    urlTo(URL_TXT, 2.85);
+    tl.to(fav, { autoAlpha: 0, duration: .45 }, 3.25);
+    tl.to(P('.s-site'), { autoAlpha: 1, duration: .45 }, 3.25);
+    tl.fromTo(P('.o-hc'), { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: .8, ease: 'power2.out', immediateRender: false }, 3.45);
+    const fcUrl = fcard({ x: 1300, y: 205, label: 'ACESSE', text: URL_TXT, icon: 'link', gold: true });
+    const fcDate = fcard({ x: 930, y: 760, label: 'DOMINGO', text: '15 de Nov · 15h', icon: 'cal' });
+    cardIn(fcUrl, 3.5, { x: 30, y: 0 });
+    cardIn(fcDate, 4.0, { x: -30, y: 0 });
+    cardOut(fcUrl, 5.0); cardOut(fcDate, 5.1);
+    stepOut('#st1', 5.0);
+
+    // ── PASSO 2: nome completo ──
+    stepIn('#st2', T.s2);
+    tl.to(phone, { scale: 1.2, duration: 1.1, ease: 'power3.inOut' }, T.s2 + .1);
+    tl.to(pg, { y: SCROLL.rsvp, duration: 1.3, ease: 'power3.inOut' }, T.s2 + .1);
+    tap(P('.r-name'), TAPS[1]);
+    tl.set(P('.r-name .r-ph'), { display: 'none' }, TAPS[1] + .15);
+    caret(P('.r-name'), TAPS[1] + .15, 7);
+    tl.to(P('.r-name .r-typed'), { text: { value: NOME }, duration: 1.6, ease: 'none' }, TAPS[1] + .3);
+    const fcTip = fcard({ x: 1520, y: 640, label: 'DICA', text: 'Nome e sobrenome', icon: 'user', gold: true });
+    cardIn(fcTip, 7.6, { x: 30, y: 0 });
+    tap(P('.r-buscar'), TAPS[2]);
+    tl.set(P('.r-name .r-caret'), { autoAlpha: 0 }, TAPS[2]);
+    tl.set(P('.r-buscar .r-dis'), { autoAlpha: 1 }, TAPS[2] + .12);
+    tl.set(P('.r-buscar .r-bt'), { text: 'Buscando...' }, TAPS[2] + .12);
+    cardOut(fcTip, 10.3);
+    stepOut('#st2', T.s3 - .4);
+
+    // ── PASSO 3: selecionar o nome ──
+    tl.set(P('.r-buscar .r-dis'), { autoAlpha: 0 }, 10.3);
+    tl.set(P('.r-buscar .r-bt'), { text: 'Buscar' }, 10.3);
+    tl.fromTo(P('.r-found'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out', immediateRender: false }, 10.35);
+    stepIn('#st3', T.s3);
+    const fcFound = fcard({ x: 930, y: 720, label: 'ENCONTRADO', text: NOME, icon: 'search', gold: true });
+    cardIn(fcFound, 11.1, { x: -30, y: 0 });
+    tap(P('.r-sel'), TAPS[3]);
+    cardOut(fcFound, 13.0);
+    stepOut('#st3', T.s4 - .4);
+
+    // ── PASSO 4: família ──
+    tl.to(P('.r-found'), { autoAlpha: 0, duration: .25 }, 13.0);
+    tl.fromTo(P('.r-fam'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out', immediateRender: false }, 13.15);
+    tl.to(pg, { y: SCROLL.fam, duration: .9, ease: 'power3.inOut' }, 13.15);
+    stepIn('#st4', T.s4);
+    const famCards = [];
+    $$('.r-cb', P('.r-fam')).forEach((cb, i) => {
+        const t = TAPS[4 + i];
+        tap(cb, t);
+        tl.to([$('.r-on', cb), $('.r-boxon', cb)], { autoAlpha: 1, duration: .15 }, t + .08);
+        const ini = FAMILIA[i].split(' ').map(w => w[0]);
+        const fc = fcard({ x: 1490, y: 250 + i * 104, text: FAMILIA[i], icon: 'user' });
+        $('.ci', fc).outerHTML = `<div class="ava">${ini[0]}${ini[ini.length - 1]}</div>`;
+        fc.insertAdjacentHTML('beforeend', `<div class="ok">${CHECK}</div>`);
+        Object.assign($('b', fc).style, { fontSize: '21px', whiteSpace: 'nowrap' });
+        cardIn(fc, t + .1, { x: 40, y: 0 });
+        famCards.push(fc);
+    });
+    famCards.forEach((fc, i) => cardOut(fc, 18.5 + i * .05));
+    stepOut('#st4', T.s5 - .4);
+
+    // ── PASSO 5: telefone e sucesso ──
+    stepIn('#st5', T.s5);
+    gsap.set(P('.r-conf .r-dis'), { autoAlpha: 1 });
+    gsap.set(P('.r-conf .r-bt'), { color: '#dfe6ed' });
+    tap(P('.r-tel'), TAPS[8]);
+    tl.set(P('.r-tel .r-ph'), { display: 'none' }, TAPS[8] + .15);
+    caret(P('.r-tel'), TAPS[8] + .15, 4);
+    tl.to(P('.r-tel .r-typed'), { text: { value: TEL }, duration: 1.2, ease: 'none' }, TAPS[8] + .25);
+    tl.to(P('.r-conf .r-dis'), { autoAlpha: 0, duration: .25 }, 20.8);
+    tl.to(P('.r-conf .r-bt'), { color: '#ffffff', duration: .25 }, 20.8);
+    tap(P('.r-conf'), TAPS[9]);
+    tl.set(P('.r-tel .r-caret'), { autoAlpha: 0 }, TAPS[9]);
+    tl.set(P('.r-conf .r-bt'), { text: 'Confirmando...' }, TAPS[9] + .12);
+    tl.to(P('.r-fam'), { autoAlpha: 0, duration: .2 }, SUCCESS_T - .15);
+    tl.to(P('.r-buscar'), { autoAlpha: 0, duration: .2 }, SUCCESS_T - .15);
+    tl.fromTo(P('.r-ok'), { autoAlpha: 0, scale: .85 }, { autoAlpha: 1, scale: 1, duration: .5, ease: 'back.out(1.8)', immediateRender: false }, SUCCESS_T);
+    tl.to(phone, { scale: 1.24, duration: .25, yoyo: true, repeat: 1, ease: 'power2.out' }, SUCCESS_T);
+    confetti(SUCCESS_T, 1430, 400);
+    const fcOk = fcard({ x: 1150, y: 860, label: 'TUDO CERTO', text: 'Presença confirmada!', icon: 'check', gold: true });
+    cardIn(fcOk, SUCCESS_T + .15, { x: 0, y: 30 });
+    stepOut('#st5', SUCCESS_T + .2);
+    stepIn('#stok', SUCCESS_T + .55);
+
+    // ── leque ──
+    stepOut('#stok', T.fan - .35);
+    cardOut(fcOk, T.fan - .3);
+    tl.to(phone, { autoAlpha: 0, scale: .6, y: 200, x: -240, duration: .55, ease: 'power3.in' }, T.fan - .3);
+    fanScene(SLOTS);
+}
+</script>
+<script src="engine.js"></script>
+<script>start();</script>
+</body>
+</html>

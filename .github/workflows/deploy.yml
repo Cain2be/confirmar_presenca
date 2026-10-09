@@ -25,3 +25,4 @@ jobs:
             **/wp_src/**
             **/.claude/**
             **/api/config.php
+            **/video/**
