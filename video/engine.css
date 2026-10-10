@@ -7,6 +7,9 @@
 :root {
     --navy: #3D5A80; --navy-dark: #2C4A6E; --navy-light: #6B8DB5; --navy-soft: #E8EEF4;
     --gold: #D4A94F; --gold-dark: #B8922E; --gold-soft: #F5ECD7; --bg: #F7F5F2;
+    /* cores do site (tema branco e dourado): --s-gold é o tom da logo, --s-text o dourado de texto sobre branco */
+    --s-gold: #E4B435; --s-text: #8A6914; --s-text-light: #6E5A2E; --s-muted: #857148; --s-line: #A8862E;
+    --s-wash: #F8F1DF; --s-cream: #FBF7EE; --s-border: #E6DCC6; --s-border-light: #F0E9DA;
     --serif: 'Cormorant Garamond', Georgia, serif; --script: 'Great Vibes', cursive;
     --sans: 'Poppins', sans-serif; --hand: 'Handlee', 'Poppins', cursive;
 }
@@ -68,31 +71,33 @@ body { font-family: var(--sans); -webkit-font-smoothing: antialiased; }
 .tgt { position: relative; }
 
 /* ── tela 1: nosso site ── */
-.s-site { background: var(--bg); font-family: var(--sans); color: #2C3E50; }
+.s-site { background: #fff; font-family: var(--sans); color: var(--s-text); }
 .o-hero { position: relative; height: 698px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
 .o-hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 33% 30%; }
-.o-ov { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(30,50,80,.1) 0%, rgba(30,50,80,.08) 40%, rgba(30,50,80,.3) 65%, rgba(20,35,60,.78) 100%); }
-.o-hc { position: relative; text-align: center; padding: 0 20px 46px; }
-.o-hc .o-logo { display: block; height: 62px; width: auto; margin: 0 auto 8px; }
-.o-names { font-family: var(--script); color: #fff; font-size: 54px; line-height: 1.15; }
-.o-type { color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: .35em; text-transform: uppercase; margin: 2px 0 12px; }
-.o-date { font-family: var(--serif); color: rgba(255,255,255,.88); font-size: 17px; letter-spacing: .08em; }
-.o-addr { color: rgba(255,255,255,.7); font-size: 11.5px; letter-spacing: .08em; margin-top: 2px; }
-.o-cd { background: #fff; padding: 30px 16px; display: flex; justify-content: center; gap: 10px; border-bottom: 1px solid #E8EDF2; }
-.o-cd div { background: var(--bg); border: 1px solid #E8EDF2; border-radius: 12px; width: 70px; padding: 12px 0 9px; text-align: center; }
-.o-cd b { display: block; font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--navy-dark); line-height: 1; }
-.o-cd span { font-size: 9px; font-weight: 600; letter-spacing: .15em; color: #95A5A6; }
-.o-orn { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 22px 0; color: var(--gold); }
-.o-orn::before, .o-orn::after { content: ''; width: 70px; height: 1px; background: var(--gold); opacity: .7; }
+.o-ov { position: absolute; inset: 0; background:
+    linear-gradient(to bottom, rgba(255,255,255,0) 85%, rgba(255,255,255,.9) 96%, #fff 100%),
+    linear-gradient(to bottom, rgba(20,14,2,.05) 0%, rgba(20,14,2,.1) 32%, rgba(20,14,2,.68) 52%, rgba(20,14,2,.74) 80%, rgba(20,14,2,0) 95%); }
+.o-hc { position: relative; text-align: center; padding: 0 20px 140px; }
+.o-hc .o-logo { display: block; height: 62px; width: auto; margin: 0 auto 8px; filter: drop-shadow(0 2px 10px rgba(20,14,2,.5)); }
+.o-names { font-family: var(--script); color: var(--s-gold); font-size: 54px; line-height: 1.15; text-shadow: 0 2px 14px rgba(20,14,2,.55); }
+.o-type { color: var(--s-gold); text-shadow: 0 1px 10px rgba(20,14,2,.7); font-size: 11px; font-weight: 600; letter-spacing: .35em; text-transform: uppercase; margin: 2px 0 12px; }
+.o-date { font-family: var(--serif); color: var(--s-gold); text-shadow: 0 1px 10px rgba(20,14,2,.7); font-size: 17px; letter-spacing: .08em; }
+.o-addr { color: var(--s-gold); text-shadow: 0 1px 10px rgba(20,14,2,.7); font-size: 11.5px; letter-spacing: .08em; margin-top: 2px; }
+.o-cd { background: #fff; padding: 30px 16px; display: flex; justify-content: center; gap: 10px; border-bottom: 1px solid var(--s-border-light); }
+.o-cd div { background: var(--s-cream); border: 1px solid var(--s-border-light); border-radius: 12px; width: 70px; padding: 12px 0 9px; text-align: center; }
+.o-cd b { display: block; font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--s-text); line-height: 1; }
+.o-cd span { font-size: 9px; font-weight: 600; letter-spacing: .15em; color: var(--s-muted); }
+.o-orn { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 22px 0; color: var(--s-gold); }
+.o-orn::before, .o-orn::after { content: ''; width: 70px; height: 1px; background: var(--s-gold); opacity: .7; }
 .o-orn svg { width: 17px; height: 17px; }
 .o-cards { padding: 18px 24px 30px; display: flex; flex-direction: column; gap: 18px; }
-.o-card { background: #fff; border: 1px solid #D5DDE5; border-radius: 12px; padding: 26px 18px; text-align: center;
+.o-card { background: #fff; border: 1px solid var(--s-border); border-radius: 12px; padding: 26px 18px; text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: 9px; box-shadow: 0 2px 20px rgba(44,74,110,.06); }
-.o-ic { width: 52px; height: 52px; border-radius: 50%; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; color: var(--gold-dark); }
+.o-ic { width: 52px; height: 52px; border-radius: 50%; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; color: var(--s-text); }
 .o-ic svg { width: 24px; height: 24px; }
-.o-card b { font-family: var(--serif); font-weight: 500; font-size: 21px; color: var(--navy-dark); }
-.o-card span { font-size: 12.5px; color: #95A5A6; }
-.o-gift .o-hl { position: absolute; inset: -1px; border-radius: 12px; border: 2px solid var(--gold); box-shadow: 0 8px 30px rgba(212,169,79,.35); opacity: 0; visibility: hidden; }
+.o-card b { font-family: var(--serif); font-weight: 500; font-size: 21px; color: var(--s-text); }
+.o-card span { font-size: 12.5px; color: var(--s-muted); }
+.o-gift .o-hl { position: absolute; inset: -1px; border-radius: 12px; border: 2px solid var(--s-gold); box-shadow: 0 8px 30px rgba(228,180,53,.35); opacity: 0; visibility: hidden; }
 
 /* ── cartões flutuantes ── */
 .fc { position: absolute; z-index: 20; display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.97);
