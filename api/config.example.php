@@ -7,6 +7,16 @@ $dbname = 'SEU_BANCO_AQUI';
 $username = 'SEU_USUARIO_AQUI';
 $password = 'SUA_SENHA_AQUI';
 
+// Avisos no grupo do WhatsApp (api/whatsapp.php). Vazios = avisos desligados.
+define('ZAPI_INSTANCE', '');        // ID da instância na Z-API
+define('ZAPI_TOKEN', '');           // token da instância
+define('ZAPI_CLIENT_TOKEN', '');    // Client-Token da conta (aba Segurança)
+define('ZAPI_GRUPO', '');           // ID do grupo, ex.: 120363...-group
+
+// Login do painel do casal no Meu Chá de Panela (api/presentes-monitor.php)
+define('MCP_EMAIL', '');
+define('MCP_SENHA', '');
+
 try {
     $pdo = new PDO(
         "mysql:host=$host;dbname=$dbname;charset=utf8mb4",

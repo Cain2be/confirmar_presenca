@@ -4,6 +4,12 @@
     Deny from all
 </Files>
 
+# Monitor dos presentes (só pela Cron) e credenciais locais de teste
+<FilesMatch "^(presentes-monitor\.php|.*\.local\.php)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
 # Headers de seguranca
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
