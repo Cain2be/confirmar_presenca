@@ -7,20 +7,27 @@
 // escolheu qual presente. Na primeira execução só registra o que já estava escolhido, sem avisar.
 // Precisa de MCP_EMAIL e MCP_SENHA (login do painel) e das credenciais da Z-API no config.php.
 
-if (PHP_SAPI !== 'cli') {
+// Bloqueia só quem chega pelo navegador (requisição HTTP). A Cron pode rodar o PHP em modo CLI
+// ou CGI, conforme a hospedagem; nos dois casos não existe REQUEST_METHOD.
+if (isset($_SERVER['REQUEST_METHOD'])) {
     http_response_code(403);
     exit;
 }
 
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/avisos.php';
-
-const MCP_API = 'https://www.meuchadepanela.com.br/api/';
+date_default_timezone_set('America/Sao_Paulo');
 
 function log_monitor(string $msg): void
 {
     echo date('Y-m-d H:i:s') . ' ' . $msg . "\n";
 }
+
+// Se o banco não conectar, o config.php já imprime o erro e encerra: a saída da Cron nunca fica vazia.
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/avisos.php';
+
+log_monitor('início (PHP ' . PHP_VERSION . ', ' . PHP_SAPI . ')');
+
+const MCP_API = 'https://www.meuchadepanela.com.br/api/';
 
 // Uma execução por vez (se a anterior travar, a próxima não duplica avisos).
 $trava = fopen(sys_get_temp_dir() . '/chadecasanova-presentes.lock', 'c');
