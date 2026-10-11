@@ -25,7 +25,14 @@ if (empty($ids)) {
     exit;
 }
 
+$ids = array_values(array_unique($ids));
 $telefone_valido = in_array($quem_confirmou, $ids);
+
+// Quem ainda não estava confirmado: só essas pessoas entram no aviso do WhatsApp.
+$marcadores = implode(',', array_fill(0, count($ids), '?'));
+$stmt = $pdo->prepare("SELECT id, full_name, confirmed, invited_cha FROM wp_torti_guests WHERE id IN ($marcadores) ORDER BY id");
+$stmt->execute($ids);
+$novos = array_values(array_filter($stmt->fetchAll(), fn($g) => (int)$g['confirmed'] !== 1));
 
 $fuso = new DateTimeZone('America/Sao_Paulo');
 $agora = new DateTime('now', $fuso);
@@ -59,3 +66,12 @@ foreach ($ids as $id) {
 }
 
 echo json_encode(['success' => true]);
+
+// O convidado já recebeu a resposta; o aviso no grupo vem depois e não o faz esperar.
+if (!empty($novos)) {
+    if (function_exists('fastcgi_finish_request')) fastcgi_finish_request();
+    elseif (function_exists('litespeed_finish_request')) litespeed_finish_request();
+
+    require_once __DIR__ . '/avisos.php';
+    avisar_confirmacao($pdo, $novos, $quem_confirmou);
+}

@@ -3,3 +3,4 @@ api/config.php
 wordpress_original/
 wp_src/
 *.mp4
+api/*.local.php
