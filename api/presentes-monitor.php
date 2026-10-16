@@ -4,7 +4,8 @@
 //
 // Entra no painel do casal pela mesma API que o site deles usa (api/login-user e api/list-user),
 // compara cada presente com a última leitura (tabela wp_torti_presentes_vistos) e avisa quem
-// escolheu qual presente. Na primeira execução só registra o que já estava escolhido, sem avisar.
+// escolheu e quem removeu a seleção de cada presente. Na primeira execução só registra o que já
+// estava escolhido, sem avisar.
 // Precisa de MCP_EMAIL e MCP_SENHA (login do painel) e das credenciais da Z-API no config.php.
 
 // Bloqueia só quem chega pelo navegador (requisição HTTP). A Cron pode rodar o PHP em modo CLI
@@ -90,8 +91,8 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS wp_torti_presentes_vistos (
 ) DEFAULT CHARSET=utf8mb4");
 
 $vistos = [];
-foreach ($pdo->query('SELECT presente_id, convidado_id FROM wp_torti_presentes_vistos') as $v) {
-    $vistos[(int)$v['presente_id']] = $v['convidado_id'] === null ? null : (int)$v['convidado_id'];
+foreach ($pdo->query('SELECT presente_id, convidado_id, convidado_nome, convidado_email FROM wp_torti_presentes_vistos') as $v) {
+    $vistos[(int)$v['presente_id']] = $v;
 }
 $primeiraVez = empty($vistos);
 
@@ -108,22 +109,27 @@ foreach ($presentes as $p) {
     $email = trim($p['convidado']['email'] ?? '');
     $nomePresente = trim($p['nome'] ?? 'Presente');
 
-    $mudou = !array_key_exists($id, $vistos) || $vistos[$id] !== $convidadoId;
-    if (!$mudou) continue;
+    $antes = $vistos[$id] ?? null;
+    $idAntes = ($antes === null || $antes['convidado_id'] === null) ? null : (int)$antes['convidado_id'];
+    if ($antes !== null && $idAntes === $convidadoId) continue;
 
-    // Presente que acabou de ganhar um convidado (novo ou trocado). Escolha removida só atualiza.
-    if ($convidadoId !== null && !$primeiraVez) {
-        if (!whatsapp_enviar(texto_presente($nomeConvidado, $email, $nomePresente))) {
+    // Escolha nova, escolha removida ou troca de convidado.
+    $texto = $primeiraVez ? null : texto_presente(
+        $idAntes === null ? null : ['nome' => trim($antes['convidado_nome'] ?? ''), 'email' => trim($antes['convidado_email'] ?? '')],
+        $convidadoId === null ? null : ['nome' => $nomeConvidado, 'email' => $email],
+        $nomePresente
+    );
+    if ($texto !== null) {
+        if (!whatsapp_enviar($texto)) {
             log_monitor("aviso não enviado para o presente $id; tenta de novo na próxima execução");
             continue;   // não grava: o aviso é repetido na próxima rodada
         }
         $avisados++;
-        log_monitor("avisado: $nomePresente");
+        log_monitor('avisado: ' . $nomePresente . ($convidadoId === null ? ' (seleção removida)' : ''));
     }
     $salvar->execute([$id, $nomePresente, $convidadoId, $nomeConvidado ?: null, $email ?: null, $agora]);
 }
 
-curl_close($ch);
 $escolhidos = count(array_filter($presentes, fn($p) => !empty($p['id_convidado'])));
 log_monitor(($primeiraVez ? 'primeira execução: estado registrado sem avisos. ' : '')
     . "presentes: " . count($presentes) . ", escolhidos: $escolhidos, avisos enviados: $avisados");

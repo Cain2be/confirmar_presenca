@@ -40,10 +40,14 @@ function avisar_confirmacao(PDO $pdo, array $novos, $quem_confirmou): void
     }
 }
 
-// Aviso de presente escolhido no Meu Chá de Panela.
-function texto_presente(string $convidado, string $email, string $presente): string
+// Aviso de mudança num presente do Meu Chá de Panela. $antes / $depois: ['nome' => ..., 'email' => ...]
+// de quem tinha / tem o presente, ou null. Troca de convidado entre duas leituras vira uma mensagem só
+// (remoção + escolha), para um reenvio nunca duplicar metade do aviso. Sem nada a avisar: null.
+function texto_presente(?array $antes, ?array $depois, string $presente): ?string
 {
-    $quem = $convidado !== '' ? $convidado : 'Alguém';
-    return "🎁 *Presente escolhido*
-$quem" . ($email !== '' ? " ($email)" : '') . " escolheu *$presente*";
+    $quem = fn(array $c) => ($c['nome'] !== '' ? $c['nome'] : 'Alguém') . ($c['email'] !== '' ? " ({$c['email']})" : '');
+    $partes = [];
+    if ($antes) $partes[] = "↩️ *Presente liberado*\n" . $quem($antes) . " removeu a seleção de *$presente*";
+    if ($depois) $partes[] = "🎁 *Presente escolhido*\n" . $quem($depois) . " escolheu *$presente*";
+    return $partes ? implode("\n\n", $partes) : null;
 }
